@@ -76,6 +76,28 @@ function createApp() {
   return app;
 }
 
+let cachedApp = null;
+let dbConnectionPromise = null;
+
+async function getServerlessApp() {
+  validateEnvironment();
+
+  if (!dbConnectionPromise) {
+    dbConnectionPromise = connectDB(process.env.MONGO_URI).catch((err) => {
+      dbConnectionPromise = null;
+      throw err;
+    });
+  }
+
+  await dbConnectionPromise;
+
+  if (!cachedApp) {
+    cachedApp = createApp();
+  }
+
+  return cachedApp;
+}
+
 async function start() {
   validateEnvironment();
   await connectDB(process.env.MONGO_URI);
@@ -102,4 +124,12 @@ if (require.main === module) {
   });
 }
 
-module.exports = { createApp, validateEnvironment };
+async function vercelHandler(req, res) {
+  const app = await getServerlessApp();
+  return app(req, res);
+}
+
+vercelHandler.createApp = createApp;
+vercelHandler.validateEnvironment = validateEnvironment;
+
+module.exports = vercelHandler;
