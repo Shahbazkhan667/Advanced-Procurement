@@ -1,0 +1,12 @@
+const express = require('express');
+const controller = require('../controllers/authController');
+const authenticate = require('../middleware/authMiddleware');
+const { validate, loginSchema, changePasswordSchema, forgotSchema, resetSchema } = require('../middleware/validationMiddleware');
+const router = express.Router();
+router.post('/login', validate(loginSchema), controller.login);
+router.post('/logout', authenticate, controller.logout);
+router.get('/me', authenticate, controller.me);
+router.post('/change-password', authenticate, validate(changePasswordSchema), controller.changePassword);
+router.post('/forgot-password', validate(forgotSchema), controller.forgotPassword);
+router.post('/reset-password', validate(resetSchema), controller.resetPassword);
+module.exports = router;
