@@ -81,8 +81,8 @@ function LoginForm({ vendorOnly = false }) {
       >
         {busy ? "Signing in…" : "Sign in"}
       </button>
-      <p className="text-center text-xs text-slate-400">
-        Admin login: admin@procurex.com · Password: Admin@123456
+      <p className="text-center text-xs capitalize text-slate-400">
+        Enter Email and Password to login
       </p>
       {!vendorOnly && (
         <div className="text-center text-sm text-slate-500">
