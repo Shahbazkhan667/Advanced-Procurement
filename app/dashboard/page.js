@@ -1,5 +1,4 @@
-import AppShell from "../../components/dashboard/AppShell";
-export default function DashboardPage() {
-  return <AppShell />;
-  
+// Rendered by <AuthGate/> -> <AppShell/> (single instance).
+export default function Page() {
+return null;
 }

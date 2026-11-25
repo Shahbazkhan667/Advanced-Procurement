@@ -1,11 +1,114 @@
-"use client";
+ "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { LogIn, UserPlus, Users, Menu, X } from "lucide-react";
-const nav = [{ href: "/login", label: "Sign In (Internal)", icon: LogIn }, { href: "/signup", label: "Sign Up (Internal)", icon: UserPlus }, { href: "/vendor-login", label: "Vendor Sign In", icon: Users }];
+import { LogIn, Users, Menu, X } from "lucide-react";
+
+const nav = [
+  { href: "/login", label: "Sign In (Internal)", icon: LogIn },
+  { href: "/vendor-login", label: "Vendor Sign In", icon: Users },
+];
+
 export default function AuthLayout({ icon: Icon = LogIn, title, subtitle, children }) {
- const pathname = usePathname(); const [open, setOpen] = useState(false);
- const sidebar = <aside className="flex h-full w-[260px] flex-col bg-[#174ea6]"><div className="flex h-16 items-center gap-3 border-b border-white/15 px-6"><div className="grid size-8 place-items-center rounded-lg bg-white text-[#1a73e8] font-black">P</div><span className="text-lg font-semibold tracking-tight text-white">ProCureX</span><button className="ml-auto text-white lg:hidden" onClick={() => setOpen(false)} aria-label="Close menu"><X size={19}/></button></div><nav className="px-4 pt-8"><p className="mb-4 px-3 text-[11px] font-semibold uppercase tracking-[.14em] text-blue-200">Authentication</p>{nav.map(({href,label,icon:I})=><Link key={href} href={href} onClick={()=>setOpen(false)} className={`mb-1 flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-white transition ${pathname===href?"bg-white/15":"hover:bg-white/10"}`}><I size={18}/>{label}</Link>)}</nav><div className="mt-auto px-6 pb-6 text-xs text-blue-100/75">A secure procurement workspace</div></aside>;
- return <div className="flex min-h-screen bg-white"><div className="hidden lg:block">{sidebar}</div>{open&&<div className="fixed inset-0 z-40 flex lg:hidden"><div className="relative z-50">{sidebar}</div><button className="flex-1 bg-black/40" aria-label="Close menu" onClick={()=>setOpen(false)}/></div>}<main className="flex-1 p-0 sm:p-6 lg:p-8"><div className="flex min-h-screen flex-col bg-[#f6f9fe] sm:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)]"><button onClick={()=>setOpen(true)} className="m-4 self-start rounded-lg bg-white p-2 shadow lg:hidden" aria-label="Open menu"><Menu size={20}/></button><div className="flex flex-1 flex-col items-center justify-center px-4 py-10"><div className="grid size-14 place-items-center rounded-full bg-[#1a73e8] text-white"><Icon size={27}/></div><h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900">{title}</h1><p className="mt-3 text-center text-[15px] text-slate-600">{subtitle}</p><div className="mt-8 w-full max-w-[458px] rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-7">{children}</div><p className="mt-8 text-center text-xs text-slate-500">By signing in, you agree to our <a href="#terms" className="font-medium text-[#1a73e8] hover:underline">Terms of Service</a> and <a href="#privacy" className="font-medium text-[#1a73e8] hover:underline">Privacy Policy</a></p></div></div></main></div>;
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  const sidebar = (
+    <aside className="relative flex h-full w-[260px] shrink-0 flex-col bg-[#174ea6]">
+      <div className="flex h-16 items-center gap-3 border-b border-white/15 px-6">
+        <div className="grid size-8 place-items-center rounded-lg bg-white font-black text-[#1a73e8]">
+          P
+        </div>
+        <span className="text-lg font-semibold tracking-tight text-white">ProCureX</span>
+        <button
+          type="button"
+          className="ml-auto text-white lg:hidden"
+          onClick={() => setOpen(false)}
+          aria-label="Close menu"
+        >
+          <X size={19} />
+        </button>
+      </div>
+
+      <nav className="px-4 pt-8">
+        <p className="mb-4 px-3 text-[11px] font-semibold uppercase tracking-[.14em] text-blue-200">
+          Authentication
+        </p>
+        {nav.map(({ href, label, icon: NavIcon }) => (
+          <Link
+            key={href}
+            href={href}
+            onClick={() => setOpen(false)}
+            className={`mb-1 flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-white transition ${
+              pathname === href ? "bg-white/15" : "hover:bg-white/10"
+            }`}
+          >
+            <NavIcon size={18} />
+            {label}
+          </Link>
+        ))}
+      </nav>
+
+      <div className="mt-auto px-6 pb-6 text-xs text-blue-100/75">
+        A secure procurement workspace
+      </div>
+    </aside>
+  );
+
+  return (
+    <div className="flex min-h-screen bg-white">
+      <div className="hidden shrink-0 lg:block">{sidebar}</div>
+
+      {open && (
+        <div className="fixed inset-0 z-40 flex lg:hidden">
+          <div className="relative z-50">{sidebar}</div>
+          <button
+            type="button"
+            className="flex-1 bg-black/40"
+            aria-label="Close menu"
+            onClick={() => setOpen(false)}
+          />
+        </div>
+      )}
+
+      <main className="min-w-0 flex-1 p-0 sm:p-6 lg:p-8">
+        <div className="flex min-h-screen flex-col bg-[#f6f9fe] sm:min-h-[calc(100vh-3rem)] lg:min-h-[calc(100vh-4rem)]">
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="m-4 self-start rounded-lg bg-white p-2 shadow lg:hidden"
+            aria-label="Open menu"
+          >
+            <Menu size={20} />
+          </button>
+
+          <div className="flex flex-1 flex-col items-center justify-center px-4 py-10">
+            <div className="grid size-14 place-items-center rounded-full bg-[#1a73e8] text-white">
+              <Icon size={27} />
+            </div>
+            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-slate-900">
+              {title}
+            </h1>
+            <p className="mt-3 text-center text-[15px] text-slate-600">{subtitle}</p>
+
+            <div className="mt-8 w-full max-w-[458px] rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-7">
+              {children}
+            </div>
+
+            <p className="mt-8 text-center text-xs text-slate-500">
+              By signing in, you agree to our{" "}
+              <a href="#terms" className="font-medium text-[#1a73e8] hover:underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#privacy" className="font-medium text-[#1a73e8] hover:underline">
+                Privacy Policy
+              </a>
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 }

@@ -1,6 +1,6 @@
-import "./globals.css";
+ import "./globals.css";
 import { StoreProvider } from "../lib/store";
-import AppShell from "../components/dashboard/AppShell";
+import AuthGate from "../components/auth/AuthGate";
 export const metadata = {
   title: "ProCureX — Procurement, made clear",
   description: "Enterprise procurement and vendor management workspace",
@@ -17,10 +17,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <StoreProvider>
-          <AppShell>{children}</AppShell>
-
+          <AuthGate>{children}</AuthGate>
         </StoreProvider>
-        
       </body>
     </html>
   );
